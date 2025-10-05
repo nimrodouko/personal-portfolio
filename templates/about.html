@@ -8,6 +8,71 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
+
+<style>
+:root {
+  --outer-size: 420px;   /* total size including border */
+  --inner-size: 400px;   /* size of the image */
+  --ring-thickness: 30px;
+  --spin-speed: 8s;      /* rotation duration */
+  
+  margin-left: 140px;
+
+  
+}
+
+/* main container */
+.glass-ring {
+  position: relative;
+  width: var(--outer-size);
+  height: var(--outer-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* animated rotating border */
+.glass-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: var(--ring-thickness);
+  background: conic-gradient(
+ rgba(173, 216, 230, 0.5),   /* light aqua */
+rgba(0, 191, 255, 0.4),     /* sky blue */
+rgba(224, 255, 255, 0.6)
+  );
+  -webkit-mask: radial-gradient(circle, transparent calc(50% - var(--ring-thickness)), black calc(50% - var(--ring-thickness) + 1px));
+  mask: radial-gradient(circle, transparent calc(50% - var(--ring-thickness)), black calc(50% - var(--ring-thickness) + 1px));
+  filter: blur(1.5px) saturate(120%);
+  animation: spin var(--spin-speed) linear infinite;
+  z-index: 0;
+}
+
+/* the profile image stays still */
+.glass-ring img {
+  width: var(--inner-size);
+  height: var(--inner-size);
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 1;
+  position: relative;
+}
+
+/* rotation animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.header{
+    justify-content: center;
+    margin-left: 50%;
+}
+</style>
+
+
+
 <body>
     <div class="row">
         <div class="col">
@@ -15,42 +80,74 @@
         </div>
         <div class="col-md-auto">
             <nav style="margin-top: 90px;padding-left: 30%;">
-                <a href="{% url 'home'%}" style="padding-right: 20px; text-decoration: none;color:black">Home</a>
-                <a href="{% url 'about'%}"style="padding-right: 20px; text-decoration: none;color:black;">About</a>
-              <a href="{%url 'projects'%}" style="padding-right: 20px; text-decoration: none;color:black;">Projects</a>
+                <a href="{% url 'about'%}"style="padding-right: 20px; text-decoration: none;color:black;"><button>About</button></a>
+                
+                <a href="{%url 'projects'%}" style="padding-right: 20px; text-decoration: none;color:black;"><button>Projects</button></a>
             </nav>
-            <h1 style="font-size: 70px;padding-top: 60px;"><b>Ouko Nimrod Omondi</b></h1>
+            <div class="header">
+                    <p ><button>Nimrod Ouko</button> <button>:</button> <button>GraphicsProgrammer</button></p>
+            </div>
+            
+            
             <hr>
             <div class="row">
 
                 
                 <div class="col">
-                    <img src="{% static 'images/danger.jpg'%}" alt="photo"height="250px", width="350px">
+                    {% for photo in object_list %}
+                        
+                        {% if photo.myphoto%}
+                            <div class="glass-ring">
+                                <img src="{{ photo.myphoto.url }}" alt="Image" height = "350px" width="450px">
+                            </div>
+                            
+                        {% endif %}
+                    {%endfor %}
     
                 </div>
                 <div class="col" style="margin-top: 40px;">
                     <p>CS major in <i style="text-decoration: underline;">NAIROBI KENYA</i></p>
                     <p >I am a university graduate  with majors in Bsc Computer Science </p>
-                    <p >My projects entail building awesome graphics softwares that are beneficial to the population</p>
+                    <p>I am a passionate developer and technology enthusiast with a strong interest in solving problems through code and design.</p> 
+                    <p>Technology has always fascinated me, not just for what it can do, but for the way it connects people, simplifies complex challenges, and opens doors to creativity.</p>
+                    
+                    
                     
                 
                 </div>
 
             </div>
             <div class="row">
-                <p style="padding-left: 10cm;padding-top: 5cm;"><b>Contact me: </b><i><a href="">oukonimrod@gmail.com</a></i></p>
+            <nav style="margin-top: 90px;padding-left: 50%;">
+                
+                <a href="#"style="padding-right: 20px; text-decoration: none;color:black;"><button>X</button></a>
+                <a href="#" style="padding-right: 20px; text-decoration: none;color:black;"><button>github</button></a>
+                <a href="#" style="padding-right: 20px; text-decoration: none;color:black;"><button>linkedin</button></a>
+                
+                
+            </nav>
+               
             </div>
       
            
                 
         </div>
-        <div class="col">
-
-        </div>
+      
     </div>
     
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>   
+<script>
+   
+document.querySelector('.bubble-container').addEventListener('click', function() {
+    let container = this;
+    container.style.animationDuration = '2s'; 
+    setTimeout(function() {
+        container.style.animationDuration = '5s';  
+    }, 1000);
+});
+
+</script>
 </body>
 </html>
 {% endblock content%}
